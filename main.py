@@ -206,20 +206,6 @@ def test(prompts, labels, args, compress, case):
     """Evaluate the answers"""
     scores = evaluate_answers(answers, labels)
 
-    """Save the results"""
-    output_path = f"results/{args.model_name}_{args.demo_type}_{case}.json"
-    if not os.path.exists(os.path.dirname(output_path)):
-        os.makedirs(os.path.dirname(output_path))
-    with open(output_path, "w") as f:
-        json.dump(
-            [
-                {"prompt": p, "label": l, "answer": a, "score": s}
-                for p, l, a, s in zip(prompts, labels, answers, scores)
-            ],
-            f,
-            indent=4,
-        )
-
 
 if __name__ == "__main__":
     os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
@@ -239,6 +225,7 @@ if __name__ == "__main__":
     original_length = 0
     compressed_length = 0
 
+    print(args.model_name)
     for index, value in enumerate(compress_methods):
         # test_prompt(prompts, labels, args, value, index)
         test(prompts, labels, args, value, index)
